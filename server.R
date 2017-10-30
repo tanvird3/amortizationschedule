@@ -60,19 +60,10 @@ shinyServer(function(input, output) {
           ),
           2
         )
-      d1 <-
-        c(
-          "Total",
-          "",
-          prettyNum(round(sum(d[, 3]), 2), big.mark = ","),
-          prettyNum(round(sum(d[, 4]), 0), big.mark = ","),
-          prettyNum(round(sum(d[, 5]), 2), big.mark = ","),
-          ""
-        )
-      d2 <- rbind(d, d1)
-      d2[(1:(nrow(d2) - 1)), (2:ncol(d2))] <-
-        sapply(d2[(1:(nrow(d2) - 1)), (2:ncol(d2))], function(x)
-          prettyNum(x, big.mark = ",", digits = 2))
+      d2 <- d
+      
+      d2[1:nrow(d2), (2:ncol(d2))]<-sapply(d2[1:nrow(d2), (2:ncol(d2))], function(x) format(x, nsmall=2, big.mark=","))
+      
       mm <- t(as.matrix(d[, 4:5]))
       par(mfrow = c(2, 1))
       s1 <- sum(d[, 4])
@@ -126,15 +117,11 @@ shinyServer(function(input, output) {
           Total_Instalment_No = number,
           Interest_Rate_Per_Period = paste(round(Int.Per_Payment * 100, 2), "%", sep =
                                              ""),
-          Installment_Size = round(installment_size, 2),
-          Grace_Period_Interest = gr,
-          Total_Interest_Charged = prettyNum(round((sum(
-            d[, 5]
-          ) + gr), 2), big.mark =
-            ",")
-        )
+          Installment_Size = format(installment_size, nsmall=2, big.mark=","),
+          Grace_Period_Interest = format(gr,nsmall=2,big.mark=","),
+          Total_Interest_Charged = format(sum(d[, 5]),nsmall=2, big.mark=","))
       list(
-        amort = comma_format()(d2),
+        amort = (d2),
         pl = pl,
         pll = pll,
         Installment_Size = comma_format()(II)

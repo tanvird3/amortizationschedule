@@ -1,6 +1,6 @@
 library(shiny)
 shinyUI(pageWithSidebar (
-  headerPanel( "AMORTIZATION_V2.01"),
+  headerPanel( "AMORTIZATION_V3.00"),
   sidebarPanel(width=3,
     numericInput("interest", label = "Enter Interest Rate (in % i.e. 10 if it is 10%)", value=as.numeric(10), min=0),
     numericInput("loan_amount", label = "Enter Total Amount of Loan Taken", value=as.numeric(500000), min=0),
