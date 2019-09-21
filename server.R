@@ -27,7 +27,7 @@ shinyServer(function(input, output) {
         (1 + interest / compounding) ^ (compounding / 12) -
         1
       installment_size <-
-        pmt(Int.Per_Payment, number,-loan_amount, 0, type = type)
+        pmt(Int.Per_Payment, number, -loan_amount, 0, type = type)
       inst <- rep(installment_size, number)
       Installment_No. <- 1:number
       interest_am <- c()
@@ -49,20 +49,20 @@ shinyServer(function(input, output) {
         }
       }
       d <-
-        round(
-          data.frame(
+          round(data.frame(
             Installment_No.,
             Beginning_Balance = beginning,
             Installment_Size = inst,
             Principal_Deducted = principal_am,
             Interest_Charged = interest_am,
             Ending_Balance = end
-          ),
-          2
-        )
+          ),2)
+      
       d2 <- d
       
-      d2[1:nrow(d2), (2:ncol(d2))]<-sapply(d2[1:nrow(d2), (2:ncol(d2))], function(x) format(x, nsmall=2, big.mark=","))
+      d2[1:nrow(d2), (2:ncol(d2))] <-
+        sapply(d2[1:nrow(d2), (2:ncol(d2))], function(x)
+          format(x, nsmall = 2, big.mark = ","))
       
       mm <- t(as.matrix(d[, 4:5]))
       par(mfrow = c(2, 1))
@@ -117,15 +117,17 @@ shinyServer(function(input, output) {
           Total_Instalment_No = number,
           Interest_Rate_Per_Period = paste(round(Int.Per_Payment * 100, 2), "%", sep =
                                              ""),
-          Installment_Size = format(installment_size, nsmall=2, big.mark=","),
-          Grace_Period_Interest = format(gr,nsmall=2,big.mark=","),
-          Total_Interest_Charged = format(sum(d[, 5]),nsmall=2, big.mark=","))
+          Installment_Size = format(installment_size, nsmall = 2, big.mark =
+                                      ","),
+          Grace_Period_Interest = format(gr, nsmall = 2, big.mark = ","),
+          Total_Interest_Charged = format(sum(d[, 5]), nsmall = 2, big.mark =
+                                            ",")
+        )
       list(
         amort = (d2),
         pl = pl,
         pll = pll,
-        Installment_Size = comma_format()(II)
-      )
+        Installment_Size = II)
     }
   output$A <-
     renderTable({
