@@ -23,11 +23,20 @@ shinyServer(function(input, output) {
       # difference with effective annual rate is the installment payment frequency, EAR assumes that the number
       # of installment per annum is equal to the compounding frequency, but installment no is 12 and compounding freq
       # is 4
-      Int.Per_Payment <-
-        (1 + interest / compounding) ^ (compounding / 12) -
-        1
+      
+      if (freq == 1) {
+        Int.Per_Payment <- interest
+      }
+      
+      else {
+        Int.Per_Payment <-
+          (1 + interest / compounding) ^ (compounding / 12) -
+          1
+      }
+      
       installment_size <-
         pmt(Int.Per_Payment, number, -loan_amount, 0, type = type)
+
       inst <- rep(installment_size, number)
       Installment_No. <- 1:number
       interest_am <- c()
@@ -49,14 +58,17 @@ shinyServer(function(input, output) {
         }
       }
       d <-
-          round(data.frame(
+        round(
+          data.frame(
             Installment_No.,
             Beginning_Balance = beginning,
             Installment_Size = inst,
             Principal_Deducted = principal_am,
             Interest_Charged = interest_am,
             Ending_Balance = end
-          ),2)
+          ),
+          2
+        )
       
       d2 <- d
       
@@ -127,7 +139,8 @@ shinyServer(function(input, output) {
         amort = (d2),
         pl = pl,
         pll = pll,
-        Installment_Size = II)
+        Installment_Size = II
+      )
     }
   output$A <-
     renderTable({
