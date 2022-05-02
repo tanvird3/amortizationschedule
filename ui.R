@@ -48,9 +48,8 @@ shinyUI(pageWithSidebar (
       selected = 4
     ),
     submitButton(text = "Apply"),
-    
-    
-    downloadButton('downloadData', 'Download The Amortization Schedule')
+    br(),
+    downloadButton('downloadData', 'Download Schedule')
   ),
   mainPanel (
     h1("Amortization Schedule"),
